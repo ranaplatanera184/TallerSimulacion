@@ -17,8 +17,12 @@ namespace MovimientoParabólico
     {
         #region Campos
 
-        /// <summary>Margen izquierdo del área de dibujo (donde comienza el tiro).</summary>
-        private const int MARGEN_IZQUIERDO = 70;
+        /// <summary>
+        /// Margen izquierdo del área de dibujo (donde comienza el tiro).
+        /// Tiene que dejar libre la derecha del golfista, que ocupa
+        /// x = 14 … 70, para que la pelota no despegue encima de él.
+        /// </summary>
+        private const int MARGEN_IZQUIERDO = 90;
 
         /// <summary>Margen derecho del área de dibujo.</summary>
         private const int MARGEN_DERECHO = 30;

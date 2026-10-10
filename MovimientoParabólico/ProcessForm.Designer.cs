@@ -222,9 +222,9 @@ namespace MovimientoParabólico
             // 
             this.picGolfista.BackColor = System.Drawing.Color.Transparent;
             this.picGolfista.Image = global::MovimientoParabólico.Properties.Resources.Golfista;
-            this.picGolfista.Location = new System.Drawing.Point(14, 340);
+            this.picGolfista.Location = new System.Drawing.Point(14, 328);
             this.picGolfista.Name = "picGolfista";
-            this.picGolfista.Size = new System.Drawing.Size(48, 76);
+            this.picGolfista.Size = new System.Drawing.Size(56, 88);
             this.picGolfista.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picGolfista.TabIndex = 3;
             this.picGolfista.TabStop = false;
@@ -234,9 +234,9 @@ namespace MovimientoParabólico
             // 
             this.picHoyo.BackColor = System.Drawing.Color.Transparent;
             this.picHoyo.Image = global::MovimientoParabólico.Properties.Resources.Hoyo;
-            this.picHoyo.Location = new System.Drawing.Point(760, 380);
+            this.picHoyo.Location = new System.Drawing.Point(760, 368);
             this.picHoyo.Name = "picHoyo";
-            this.picHoyo.Size = new System.Drawing.Size(34, 34);
+            this.picHoyo.Size = new System.Drawing.Size(48, 48);
             this.picHoyo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picHoyo.TabIndex = 4;
             this.picHoyo.TabStop = false;
