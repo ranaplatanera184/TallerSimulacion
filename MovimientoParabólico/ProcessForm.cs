@@ -66,6 +66,13 @@ namespace MovimientoParabólico
 
         private void ProcessForm_Load(object sender, EventArgs e)
         {
+            // NO se puede fijar en el diseñador: MinimumSize infla la ventana
+            // cuando se crea el handle y, si eso ocurre antes de que se
+            // calculen los márgenes de anclaje, tabControl1 queda con unos
+            // márgenes distintos a los del diseñador y las dos columnas se
+            // solapan al encoger. Se fija aquí, cuando el layout ya está tomado.
+            this.MinimumSize = new Size(1310, 720);
+
             AplicarEstiloTabla(dgvRecorrido);
             AplicarEstiloTabla(dgvViento);
 
@@ -138,6 +145,10 @@ namespace MovimientoParabólico
 
             datos = salida.Datos;
             PrepararEscena();
+
+            // La animación se ve en la pestaña del campo; las tablas se van
+            // llenando en paralelo en la otra pestaña.
+            tabControl1.SelectedTab = tabPartida;
             IniciarAnimacion();
         }
 
@@ -287,6 +298,28 @@ namespace MovimientoParabólico
                 py - picPelota.Height / 2);
         }
 
+        /// <summary>
+        /// El área de juego cambia de tamaño al maximizar la ventana, por lo
+        /// que hay que recalcular la escala y volver a dibujar el escenario y
+        /// el fotograma que se esté mostrando.
+        /// </summary>
+        private void picCampo_Resize(object sender, EventArgs e)
+        {
+            if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            PrepararEscena();
+
+            if (datos != null && indiceFotograma > 0 &&
+                indiceFotograma <= datos.Recorrido.Count)
+            {
+                FilaRecorrido actual = datos.Recorrido[indiceFotograma - 1];
+                ColocarPelota(actual.X, actual.Y);
+            }
+        }
+
         #endregion
 
         #region Animación de los fotogramas
@@ -424,6 +457,7 @@ namespace MovimientoParabólico
             }
 
             lblResultado.BackColor = Color.FromArgb(40, 40, 40);
+            lblEstado.Text += "   ·   Vea la pestaña «Tablas de información»";
         }
 
         #endregion

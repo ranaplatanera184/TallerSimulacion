@@ -60,6 +60,13 @@ No test framework is configured. Verification is done by:
    contract (same argv, same two CSV files, same working directory). This
    covers CSV parsing, the 0.5 s step, `resumen.csv` coherence, wind bounds
    and the two error paths (Octave missing, `simular.m` missing).
+4. `LayoutTest.cs` in the same folder: instantiates `ProcessForm`, **shows
+   and hides it** (needed — without a real handle Mono does not propagate
+   anchoring into the tab pages) and then measures containment / overlap /
+   visible table rows at three sizes: minimum, maximized and the size forced
+   by `MinimumSize`. It must end with `TODO OK`. Note the window manager here
+   is **Hyprland in tiling mode**, which resizes any window it sees to
+   664×718 — that is why the form is hidden before measuring.
 
 Octave itself is **not installed here**; `simular.m` must be executed on
 Windows.
@@ -172,6 +179,26 @@ MovimientoParabólico/
 - Flow: `LeerParametros()` → `OctaveIntegration.Ejecutar()` →
   `PrepararEscena()` (scale from the real data) → `IniciarAnimacion()` →
   one row per table per `timerAnimacion_Tick` → `FinalizarAnimacion()`.
+
+### Anchoring rules (learned the hard way)
+- **Two tabs** inside `tabControl1`: `tabPartida` (golf field + input panel)
+  and `tabTablas` (both tables side by side). The tables did not fit on one
+  screen at 1366×768. `btnLanzar_Click` switches to `tabPartida`;
+  `FinalizarAnimacion()` reminds the user to open `tabTablas`.
+- Every `TabPage` needs an explicit `Location` **and `Size`**, and
+  `TabPages.Controls.Add` must come **after** `tabControl1.Size`. Otherwise
+  `tabControl1.DisplayRectangle` is computed against a zero-sized page and
+  every child inside it overflows (observed: `picCampo` growing to 1046 px).
+- Set `Anchor` **after** `Location` and `Size` on every control: the anchor
+  margins are measured from the bounds that exist when `Anchor` is assigned.
+- **`MinimumSize` must be assigned in `ProcessForm_Load`, never in the
+  Designer file.** A Designer-set `MinimumSize` inflates the window while the
+  handle is being created, i.e. *before* the anchor margins are captured, so
+  `tabControl1` records right/bottom margins of 42/56 instead of 12/10 and the
+  two columns overlap as soon as the user shrinks the window.
+- `this.ClientSize` is set twice in `ProcessForm.Designer.cs`: once at the
+  top (before any control is created, so the anchors capture the right
+  margins) and once at the end, where the Designer puts it. Keep both.
 
 ### The C# ↔ Octave contract
 ```

@@ -7,6 +7,11 @@ Juego de golf: se cargan el ángulo y la fuerza del golpe, Octave calcula la
 trayectoria y el viento aleatorio, y la app anima la pelota un fotograma cada
 0,5 s mientras llena las dos tablas de información.
 
+La ventana se divide en dos pestañas —**Partida** (campo de golf y entradas)
+y **Tablas de información** (recorrido y viento, una al lado de la otra)— para
+que quepan en una pantalla de 1366×768. Al maximizar cada tabla muestra
+≈35 filas.
+
 - **[`INFORME.md`](INFORME.md)** — modelo matemático, integración y mapeo con
   la rúbrica.
 - **`MovimientoParabólico.sln`** — abrir en Visual Studio 2022.

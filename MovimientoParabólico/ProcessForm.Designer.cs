@@ -25,6 +25,11 @@ namespace MovimientoParabólico
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblEstado = new System.Windows.Forms.Label();
 
+            // Pestañas: "Partida" (campo + entradas) y "Tablas de información"
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPartida = new System.Windows.Forms.TabPage();
+            this.tabTablas = new System.Windows.Forms.TabPage();
+
             // Campo de golf
             this.picCampo = new System.Windows.Forms.PictureBox();
             this.picGolfista = new System.Windows.Forms.PictureBox();
@@ -81,6 +86,14 @@ namespace MovimientoParabólico
 
             // Inicialización de contenedores y controles compuestos
             this.SuspendLayout();
+
+            // El tamaño del formulario se fija ANTES de crear los
+            // controles anclados: el anclaje mide sus márgenes contra
+            // el área cliente del formulario.
+            this.ClientSize = new System.Drawing.Size(1280, 670);
+            this.tabControl1.SuspendLayout();
+            this.tabPartida.SuspendLayout();
+            this.tabTablas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCampo)).BeginInit();
             this.picCampo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGolfista)).BeginInit();
@@ -109,9 +122,62 @@ namespace MovimientoParabólico
             this.timerAnimacion.Interval = 500;
             this.timerAnimacion.Tick += new System.EventHandler(this.timerAnimacion_Tick);
 
-            // 
+            //
+            // tabControl1
+            //
+            // El control queda anclado a los cuatro lados: si la ventana se
+            // maximiza, crece sobre todo el área de las tablas y se ven más
+            // filas sin necesidad de desplazarse.
+            //
+            // IMPORTANTE: las páginas DEBEN llevar Size explícito. El anclaje
+            // de sus hijos se mide contra el tamaño que la página tiene en ese
+            // momento; si se deja en (0,0) los controles se desbordan al
+            // primer reajuste de la ventana.
+            this.tabControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.tabControl1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.tabControl1.ForeColor = System.Drawing.Color.White;
+            this.tabControl1.Location = new System.Drawing.Point(12, 64);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1256, 596);
+            this.tabControl1.TabIndex = 2;
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPartida);
+            this.tabControl1.Controls.Add(this.tabTablas);
+
+            //
+            // tabPartida
+            //
+            this.tabPartida.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.tabPartida.Location = new System.Drawing.Point(2, 26);
+            this.tabPartida.Name = "tabPartida";
+            this.tabPartida.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPartida.Size = new System.Drawing.Size(1252, 568);
+            this.tabPartida.TabIndex = 0;
+            this.tabPartida.Text = "Partida";
+            this.tabPartida.UseVisualStyleBackColor = false;
+            this.tabPartida.Controls.Add(this.picCampo);
+            this.tabPartida.Controls.Add(this.panelEntradas);
+
+            //
+            // tabTablas
+            //
+            this.tabTablas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.tabTablas.Location = new System.Drawing.Point(2, 26);
+            this.tabTablas.Name = "tabTablas";
+            this.tabTablas.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTablas.Size = new System.Drawing.Size(1252, 568);
+            this.tabTablas.TabIndex = 1;
+            this.tabTablas.Text = "Tablas de información";
+            this.tabTablas.UseVisualStyleBackColor = false;
+            this.tabTablas.Controls.Add(this.grpRecorrido);
+            this.tabTablas.Controls.Add(this.grpViento);
+
+            //
             // lblTitulo
-            // 
+            //
             this.lblTitulo.AutoSize = true;
             this.lblTitulo.BackColor = System.Drawing.Color.Transparent;
             this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
@@ -142,11 +208,14 @@ namespace MovimientoParabólico
             this.picCampo.BackgroundImage = global::MovimientoParabólico.Properties.Resources.Fondo;
             this.picCampo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picCampo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picCampo.Location = new System.Drawing.Point(12, 76);
+            this.picCampo.Location = new System.Drawing.Point(8, 8);
             this.picCampo.Name = "picCampo";
-            this.picCampo.Size = new System.Drawing.Size(980, 432);
+            this.picCampo.Size = new System.Drawing.Size(940, 546);
+            this.picCampo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.picCampo.TabIndex = 2;
             this.picCampo.TabStop = false;
+            this.picCampo.Resize += new System.EventHandler(this.picCampo_Resize);
 
             // 
             // picGolfista
@@ -201,9 +270,11 @@ namespace MovimientoParabólico
             this.panelEntradas.Controls.Add(this.btnLanzar);
             this.panelEntradas.Controls.Add(this.btnReiniciar);
             this.panelEntradas.Controls.Add(this.lblResultado);
-            this.panelEntradas.Location = new System.Drawing.Point(1000, 76);
+            this.panelEntradas.Location = new System.Drawing.Point(956, 8);
             this.panelEntradas.Name = "panelEntradas";
-            this.panelEntradas.Size = new System.Drawing.Size(268, 432);
+            this.panelEntradas.Size = new System.Drawing.Size(288, 546);
+            this.panelEntradas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEntradas.TabIndex = 6;
 
             // 
@@ -233,7 +304,7 @@ namespace MovimientoParabólico
             this.grpEntradas.ForeColor = System.Drawing.Color.Gold;
             this.grpEntradas.Location = new System.Drawing.Point(7, 7);
             this.grpEntradas.Name = "grpEntradas";
-            this.grpEntradas.Size = new System.Drawing.Size(252, 320);
+            this.grpEntradas.Size = new System.Drawing.Size(274, 360);
             this.grpEntradas.TabIndex = 0;
             this.grpEntradas.TabStop = false;
             this.grpEntradas.Text = "Parámetros de entrada";
@@ -497,9 +568,9 @@ namespace MovimientoParabólico
             this.btnLanzar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLanzar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnLanzar.ForeColor = System.Drawing.Color.White;
-            this.btnLanzar.Location = new System.Drawing.Point(8, 334);
+            this.btnLanzar.Location = new System.Drawing.Point(8, 379);
             this.btnLanzar.Name = "btnLanzar";
-            this.btnLanzar.Size = new System.Drawing.Size(120, 36);
+            this.btnLanzar.Size = new System.Drawing.Size(130, 40);
             this.btnLanzar.TabIndex = 1;
             this.btnLanzar.Text = "Lanzar";
             this.btnLanzar.UseVisualStyleBackColor = false;
@@ -512,9 +583,9 @@ namespace MovimientoParabólico
             this.btnReiniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReiniciar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnReiniciar.ForeColor = System.Drawing.Color.White;
-            this.btnReiniciar.Location = new System.Drawing.Point(138, 334);
+            this.btnReiniciar.Location = new System.Drawing.Point(148, 379);
             this.btnReiniciar.Name = "btnReiniciar";
-            this.btnReiniciar.Size = new System.Drawing.Size(120, 36);
+            this.btnReiniciar.Size = new System.Drawing.Size(130, 40);
             this.btnReiniciar.TabIndex = 2;
             this.btnReiniciar.Text = "Reiniciar";
             this.btnReiniciar.UseVisualStyleBackColor = false;
@@ -526,9 +597,11 @@ namespace MovimientoParabólico
             this.lblResultado.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblResultado.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblResultado.ForeColor = System.Drawing.Color.White;
-            this.lblResultado.Location = new System.Drawing.Point(8, 376);
+            this.lblResultado.Location = new System.Drawing.Point(8, 431);
             this.lblResultado.Name = "lblResultado";
-            this.lblResultado.Size = new System.Drawing.Size(250, 48);
+            this.lblResultado.Size = new System.Drawing.Size(270, 106);
+            this.lblResultado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResultado.TabIndex = 3;
             this.lblResultado.Text = "Objetivo: sin evaluar";
             this.lblResultado.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -539,9 +612,11 @@ namespace MovimientoParabólico
             this.grpRecorrido.Controls.Add(this.dgvRecorrido);
             this.grpRecorrido.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.grpRecorrido.ForeColor = System.Drawing.Color.LimeGreen;
-            this.grpRecorrido.Location = new System.Drawing.Point(12, 516);
+            this.grpRecorrido.Location = new System.Drawing.Point(8, 8);
             this.grpRecorrido.Name = "grpRecorrido";
-            this.grpRecorrido.Size = new System.Drawing.Size(620, 344);
+            this.grpRecorrido.Size = new System.Drawing.Size(610, 546);
+            this.grpRecorrido.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.grpRecorrido.TabIndex = 7;
             this.grpRecorrido.TabStop = false;
             this.grpRecorrido.Text = "Tabla 1 - Recorrido (un fotograma cada 0.5 s)";
@@ -568,7 +643,10 @@ namespace MovimientoParabólico
             this.dgvRecorrido.ReadOnly = true;
             this.dgvRecorrido.RowHeadersVisible = false;
             this.dgvRecorrido.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecorrido.Size = new System.Drawing.Size(600, 310);
+            this.dgvRecorrido.Size = new System.Drawing.Size(590, 512);
+            this.dgvRecorrido.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvRecorrido.TabIndex = 0;
 
             // 
@@ -625,9 +703,11 @@ namespace MovimientoParabólico
             this.grpViento.Controls.Add(this.dgvViento);
             this.grpViento.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.grpViento.ForeColor = System.Drawing.Color.Cyan;
-            this.grpViento.Location = new System.Drawing.Point(644, 516);
+            this.grpViento.Location = new System.Drawing.Point(634, 8);
             this.grpViento.Name = "grpViento";
-            this.grpViento.Size = new System.Drawing.Size(624, 344);
+            this.grpViento.Size = new System.Drawing.Size(610, 546);
+            this.grpViento.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpViento.TabIndex = 8;
             this.grpViento.TabStop = false;
             this.grpViento.Text = "Tabla 2 - Agentes de generación aleatoria (viento por fotograma)";
@@ -652,7 +732,10 @@ namespace MovimientoParabólico
             this.dgvViento.ReadOnly = true;
             this.dgvViento.RowHeadersVisible = false;
             this.dgvViento.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvViento.Size = new System.Drawing.Size(604, 310);
+            this.dgvViento.Size = new System.Drawing.Size(590, 512);
+            this.dgvViento.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvViento.TabIndex = 0;
 
             // 
@@ -693,18 +776,14 @@ namespace MovimientoParabólico
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.ClientSize = new System.Drawing.Size(1280, 880);
+            this.ClientSize = new System.Drawing.Size(1280, 670);
             this.Controls.Add(this.lblTitulo);
             this.Controls.Add(this.lblEstado);
-            this.Controls.Add(this.picCampo);
-            this.Controls.Add(this.panelEntradas);
-            this.Controls.Add(this.grpRecorrido);
-            this.Controls.Add(this.grpViento);
+            this.Controls.Add(this.tabControl1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1280, 880);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            this.MaximizeBox = true;
             this.Name = "ProcessForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Movimiento Parabolico - Simulador de Golf";
@@ -733,6 +812,9 @@ namespace MovimientoParabólico
             ((System.ComponentModel.ISupportInitialize)(this.picGolfista)).EndInit();
             this.picCampo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picCampo)).EndInit();
+            this.tabTablas.ResumeLayout(false);
+            this.tabPartida.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -742,6 +824,9 @@ namespace MovimientoParabólico
         private System.Windows.Forms.Timer timerAnimacion;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblEstado;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPartida;
+        private System.Windows.Forms.TabPage tabTablas;
         private System.Windows.Forms.PictureBox picCampo;
         private System.Windows.Forms.PictureBox picGolfista;
         private System.Windows.Forms.PictureBox picHoyo;

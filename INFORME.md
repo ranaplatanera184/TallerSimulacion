@@ -173,15 +173,30 @@ Con estos valores, sin viento la pelota cae a ≈160,8 m — prácticamente enci
 del hoyo —, de modo que la partida arranca balanceada: la dificultad es
 compensar la ráfaga aleatoria, no adivinar la fuerza.
 
-Pantalla:
+Pantalla — dos pestañas dentro de un `TabControl`, porque con una sola ventana
+de 1280×670 de área cliente las dos tablas no caben en una pantalla de
+1366×768:
 
-* **Área de golf** (izquierda): fondo, golfista, hoyo y pelota; la escala se
-  recalcula con los datos reales de cada corrida para que la parábola siempre
-  quepa.
-* **Panel de entradas** (derecha): los nueve campos + botones **Lanzar** y
-  **Reiniciar** + rótulo del resultado.
-* **Tabla 1 — Recorrido**: `t, x, y, vx, vy, |v|`.
-* **Tabla 2 — Agentes aleatorios**: `t, dirección, fuerza, ax`.
+* **Pestaña «Partida»**
+  * **Área de golf** (izquierda): fondo, golfista, hoyo y pelota; la escala se
+    recalcula con los datos reales de cada corrida para que la parábola siempre
+    quepa. Se redibuja también al redimensionar la ventana.
+  * **Panel de entradas** (derecha): los nueve campos + botones **Lanzar** y
+    **Reiniciar** + rótulo del resultado.
+* **Pestaña «Tablas de información»**
+  * **Tabla 1 — Recorrido**: `t, x, y, vx, vy, |v|`.
+  * **Tabla 2 — Agentes aleatorios**: `t, dirección, fuerza, ax`.
+
+Al pulsar **Lanzar** se salta a la pestaña «Partida» y, al terminar la
+animación, el rótulo de estado avisa de que hay que consultar la pestaña de
+tablas.
+
+Todo el `TabControl` está anclado a los cuatro lados, de modo que al maximizar
+las tablas ganan altura (≈35 filas visibles) y al encoger nunca se solapan:
+`MinimumSize` impide bajar de 1310×720 de ventana (≈1294×670 de área cliente),
+que es justo lo que necesita el diseño. Ese mínimo se fija en `Form_Load` y
+**no** en el diseñador: si se pone en el diseñador, la ventana se infla antes
+de calcular los márgenes de anclaje y las dos columnas acaban pisándose.
 
 ---
 
@@ -250,6 +265,15 @@ Compila con **0 advertencias y 0 errores** (msbuild/Mono 16.10.1, .NET 4.8).
 > ausente). El `simular.m` real debe ejecutarse en Windows junto con la
 > entrega.
 
+> **Nota de maquetación.** Un segundo arnés (33 comprobaciones) crea la
+> ventana, la oculta y luego la mide en tres tamaños —mínimo (1294×670),
+> maximizado (1900×1040) y el que impone `MinimumSize`— comprobando en cada
+> uno que ningún control se sale de su pestaña, que las dos columnas no se
+> solapan y que cada tabla deja ver al menos 13 filas sin scroll (18–20 en el
+> tamaño normal, 35 al maximizar). Para poder medir tamaños concretos la
+> ventana se oculta antes de medir: en este entorno el gestor de ventanas
+> (Hyprland, modo teselado) la reajusta a 664×718 apenas aparece.
+
 ---
 
 ## 9. Estructura del proyecto
@@ -258,7 +282,7 @@ Compila con **0 advertencias y 0 errores** (msbuild/Mono 16.10.1, .NET 4.8).
 MovimientoParabólico/
 ├── Program.cs                 # Punto de entrada
 ├── ProcessForm.cs             # Lógica: entradas, animación, tablas, objetivo
-├── ProcessForm.Designer.cs    # UI generada (cablea TODOS los controles y el timer)
+├── ProcessForm.Designer.cs    # UI generada (cablea controles, timer y pestañas)
 ├── ProcessForm.resx
 ├── PhysicsCalculator.cs       # Sólo conversión px↔m y formateo (sin física)
 ├── DatosSimulacion.cs         # DTOs compartidos (parámetros, filas, resumen)
